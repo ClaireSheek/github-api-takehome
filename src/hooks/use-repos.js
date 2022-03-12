@@ -17,7 +17,6 @@ export const useRepos = (username, page) => {
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           setRepos((prev) => [...prev, ...data]);
           setLoading(false);
         })

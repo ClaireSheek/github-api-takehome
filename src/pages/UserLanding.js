@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import SideBar from "./SideBar";
-import { useReadMe } from "./use-readme";
+import { useReadMe } from "../hooks/use-readme";
 
 const UserLanding = () => {
   const [repo, setRepo] = useState(null);

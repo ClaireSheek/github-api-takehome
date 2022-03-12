@@ -7,7 +7,6 @@ export const useReadMe = (username, repo) => {
   const [readme, setReadme] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  console.log("FETCHING REPO");
 
   // GitHub API path for README.md
   // /repos/${username}/${repo}/contents/README.md
@@ -20,8 +19,6 @@ export const useReadMe = (username, repo) => {
     setLoading(true);
 
     const fetchReadMe = async () => {
-      console.log("Username: ", username, "Repo", repo);
-
       var request = new Request(url, {
         headers: new Headers({ accept: "application/vnd.github.v3.raw" }),
       });

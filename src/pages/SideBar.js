@@ -1,32 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import { useRepos } from "./use-repos";
+import { useRepos } from "../hooks/use-repos";
 
 const SideBar = ({ setRepo }) => {
+  const [repoList, setRepoList] = useState([]);
   const { username } = useParams();
 
-  const { lastItem, page } = useInfiniteScroll({
-    customRoot: document.querySelector(".sideBar"),
-  });
+  const { lastItem, page } = useInfiniteScroll(
+    document.querySelector(".sideBar"),
+    repoList
+  );
   const { repos, error } = useRepos(username, page);
+
+  useEffect(() => {
+    setRepoList(repos);
+    return () => {
+      setRepoList({}); // Cleanup function
+    };
+  }, [repos]);
 
   return (
     <>
       <div className="sideBar">
-        {repos?.map((r) => (
-          <button
-            key={r.id}
-            onClick={() => {
-              // setRepo(r);
-              setRepo(r.name);
-            }}
-          >
-            {r.name}
-          </button>
-        ))}
+        {repos?.map((r, index) =>
+          index === repos.length - 1 ? (
+            <button
+              ref={lastItem}
+              key={r.id}
+              onClick={() => {
+                setRepo(r.name);
+              }}
+            >
+              {r.name}
+            </button>
+          ) : (
+            <button
+              key={r.id}
+              onClick={() => {
+                setRepo(r.name);
+              }}
+            >
+              {r.name}
+            </button>
+          )
+        )}
 
-        <p ref={lastItem}>loading more...</p>
+        {/* <p ref={lastItem}>loading more...</p> */}
         {error && <p>{error}</p>}
       </div>
       <style jsx>{`
